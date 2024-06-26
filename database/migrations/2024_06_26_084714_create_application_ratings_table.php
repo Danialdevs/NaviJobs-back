@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('application_ratings', function (Blueprint $table) {
             $table->id();
             $table->string('comment')->nullable();
-            $table->integer('stars', 5);
+            $table->integer('stars');
             $table->foreignId('application_id')->constrained('applications');
             $table->timestamps();
         });
