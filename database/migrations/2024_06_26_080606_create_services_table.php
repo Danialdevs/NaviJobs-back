@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('price');
+            $table->float('price');
             $table->enum('type', ['hour_price', 'fixed_price', 'custom_price']);
             $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();
