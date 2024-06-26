@@ -4,20 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompaniesTable extends Migration
+class CreateCompanyOfficesTable extends Migration
 {
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('company_offices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('city_id')->constrained('cities');
+            $table->string('address');
+            $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('company_offices');
     }
 }
