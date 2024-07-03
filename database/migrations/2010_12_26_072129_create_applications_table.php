@@ -14,7 +14,7 @@ class CreateApplicationsTable extends Migration
             $table->foreignId('client_id')->constrained('clients');
             $table->foreignId('service_id')->constrained('services');
             $table->string('address');
-            $table->text('comment')->nullable();
+            $table->text('description');
             $table->string('status');
             $table->text('system_comment')->nullable();
             $table->timestamps();
