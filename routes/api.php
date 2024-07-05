@@ -7,10 +7,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyOfficeController;
 
 
-Route::get('companies/{company_id}/office/{office_id}', [CompanyOfficeController::class, 'Check_role']);
+Route::group(['prefix' => 'offices', 'middleware' => ['auth:sanctum']], function (){
+    Route::get('/', [CompanyOfficeController::class, 'index']);
+    Route::get('/{office_id}', [CompanyOfficeController::class, 'show']);
+    Route::post('/', [CompanyOfficeController::class, 'store']);
+    Route::delete('/{office_id}', [CompanyOfficeController::class, 'destroy']);
+});
 
 Route::post('company_offices', [CompanyOfficeController::class, 'store']);
-
 Route::post('login', [AuthController::class, 'login']);
 
 Route::get('/user', function (Request $request) {
