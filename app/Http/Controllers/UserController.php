@@ -11,26 +11,18 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse; // Использ
 
 class UserController extends Controller
 {
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request)
     {
-        $email = $request->input('email');
-        $password = $request->input('password');
-
-        /** @var User|null $user */
-        $user = Auth::guard('web')->user();
-
-        if (!$user || !Auth::guard('web')->attempt(['email' => $email, 'password' => $password])) {
+        if (!Auth::attempt($request->validated())) {
             return response()->json([
-                'message' => 'Неверный логин или пароль',
-            ], HttpResponse::HTTP_UNAUTHORIZED);
+                'message' => 'Invalid login data'
+            ], 401);
         }
+        $token = Auth::user()->createToken('api-token');
 
-        $token = $user->createToken('login');
-
-        $user->update(['api_token' => $token->plainTextToken]);
-
-        return response()->json([
-            'message' => 'Успешный вход в систему',
-        ], HttpResponse::HTTP_OK);
+        return [
+            'token' => $token->plainTextToken
+        ];
     }
+
 }
