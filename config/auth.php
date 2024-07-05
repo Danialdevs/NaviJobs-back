@@ -4,38 +4,45 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Defaults
+    | Значения по умолчанию для аутентификации
     |--------------------------------------------------------------------------
     |
-    | This option controls the default authentication "guard" and password
-    | reset options for your application. You may change these defaults
-    | as required, but they're a perfect start for most applications.
+    | Эта опция контролирует значения по умолчанию для "гварда" аутентификации и
+    | сброса паролей в вашем приложении. Вы можете изменить эти значения по умолчанию
+    | по мере необходимости, но они отлично подходят для большинства приложений.
     |
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'web', // Используем web guard по умолчанию
         'passwords' => 'users',
     ],
 
+
     /*
     |--------------------------------------------------------------------------
-    | Authentication Guards
+    | Гварды аутентификации
     |--------------------------------------------------------------------------
     |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | here which uses session storage and the Eloquent user provider.
+    | Далее вы можете определить каждый гвард аутентификации для вашего приложения.
+    | Конечно, отличная конфигурация по умолчанию уже определена для вас, которая
+    | использует хранение сессий и провайдера пользователей Eloquent.
     |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
+    | Все драйверы аутентификации имеют провайдера пользователей. Это определяет,
+    | как пользователи фактически извлекаются из вашей базы данных или других
+    | механизмов хранения данных, используемых этим приложением для сохранения данных
+    | пользователя.
     |
-    | Supported: "session"
+    | Поддерживаются: "session"
     |
     */
 
     'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'users',
@@ -44,18 +51,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User Providers
+    | Провайдеры пользователей
     |--------------------------------------------------------------------------
     |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
+    | Все драйверы аутентификации имеют провайдера пользователей. Это определяет,
+    | как пользователи фактически извлекаются из вашей базы данных или других
+    | механизмов хранения данных, используемых этим приложением для сохранения данных
+    | пользователя.
     |
-    | If you have multiple user tables or models you may configure multiple
-    | sources which represent each model / table. These sources may then
-    | be assigned to any extra authentication guards you have defined.
+    | Если у вас есть несколько таблиц или моделей пользователей, вы можете настроить
+    | несколько источников, представляющих каждую модель/таблицу. Эти источники могут
+    | быть назначены любым дополнительным гвардам аутентификации, которые вы определили.
     |
-    | Supported: "database", "eloquent"
+    | Поддерживаются: "database", "eloquent"
     |
     */
 
@@ -73,20 +81,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resetting Passwords
+    | Сброс паролей
     |--------------------------------------------------------------------------
     |
-    | You may specify multiple password reset configurations if you have more
-    | than one user table or model in the application and you want to have
-    | separate password reset settings based on the specific user types.
+    | Вы можете указать несколько конфигураций сброса паролей, если у вас есть
+    | более одной таблицы или модели пользователей в приложении, и вы хотите
+    | иметь отдельные настройки сброса паролей для разных типов пользователей.
     |
-    | The expiry time is the number of minutes that each reset token will be
-    | considered valid. This security feature keeps tokens short-lived so
-    | they have less time to be guessed. You may change this as needed.
+    | Время истечения указывает количество минут, в течение которых каждый токен
+    | сброса будет считаться действительным. Эта функция безопасности делает токены
+    | недолговечными, чтобы их было труднее угадать. Вы можете изменить это по мере необходимости.
     |
-    | The throttle setting is the number of seconds a user must wait before
-    | generating more password reset tokens. This prevents the user from
-    | quickly generating a very large amount of password reset tokens.
+    | Параметр throttle указывает количество секунд, которое должно пройти перед
+    | генерацией новых токенов сброса пароля. Это предотвращает быстрое создание
+    | большого количества токенов сброса пароля.
     |
     */
 
@@ -101,12 +109,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Password Confirmation Timeout
+    | Тайм-аут подтверждения пароля
     |--------------------------------------------------------------------------
     |
-    | Here you may define the amount of seconds before a password confirmation
-    | times out and the user is prompted to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
+    | Здесь вы можете определить количество секунд, через которое подтверждение
+    | пароля истекает и пользователя просят заново ввести пароль на экране
+    | подтверждения. По умолчанию тайм-аут длится три часа.
     |
     */
 
