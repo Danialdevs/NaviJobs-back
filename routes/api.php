@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyOfficeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServiceController;
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
@@ -27,4 +28,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users', [UserController::class, 'store']);
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
+});
+Route::group(['prefix' => 'services', 'middleware' => ['auth:sanctum']], function () {
+    Route::get('/', [ServiceController::class, 'index']);
+    Route::get('/{id}', [ServiceController::class, 'show']);
+    Route::post('/', [ServiceController::class, 'store']);
+    Route::put('/{id}', [ServiceController::class, 'update']);
+    Route::delete('/{id}', [ServiceController::class, 'destroy']);
 });
