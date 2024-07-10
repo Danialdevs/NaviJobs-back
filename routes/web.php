@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return bcrypt("123123123");
+    return bcrypt("123123");
 });
