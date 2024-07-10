@@ -16,7 +16,10 @@ Route::group(['prefix' => 'offices', 'middleware' => ['auth:sanctum']], function
     // Дополнительные маршруты для работы с пользователями по офисам
     Route::get('/{office_id}/users', [CompanyOfficeController::class, 'getUsersByOffice']);
     Route::get('/{office_id}/users/sort', [CompanyOfficeController::class, 'sortUsersByOffice']);
+    Route::post('/company-offices/{office_id}/users/{user_id}', [CompanyOfficeController::class, 'addUserToOffice']);
+    Route::delete('/company-offices/{office_id}/users/{user_id}', [CompanyOfficeController::class, 'removeUserFromOffice']);
 });
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);

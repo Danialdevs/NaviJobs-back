@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\CompanyOffice;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response as HttpResponse; // Используем алиас для разрешения констант
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -59,7 +57,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
+            'password' => Hash::make($validatedData['password']),
             'office_id' => $validatedData['office_id'],
         ]);
 
@@ -80,7 +78,7 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
+            'email' => ['required', 'email', Rule::unique('users')->ignore($id)],
             'password' => 'sometimes|string|min:6',
             'office_id' => 'required|exists:company_offices,id',
         ]);
@@ -89,8 +87,8 @@ class UserController extends Controller
 
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
-        if (isset($validatedData['password'])) {
-            $user->password = bcrypt($validatedData['password']);
+        if ($request->filled('password')) {
+            $user->password = Hash::make($validatedData['password']);
         }
         $user->office_id = $validatedData['office_id'];
 

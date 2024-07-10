@@ -169,4 +169,75 @@ class CompanyOfficeController extends Controller
             'users' => $users
         ]);
     }
+    /**
+     * Добавить пользователя к офису.
+     *
+     * @param Request $request
+     * @param int $office_id
+     * @param int $user_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addUserToOffice(Request $request, $office_id, $user_id)
+    {
+        if ($request->user()->role !== 'admin') {
+            return response()->json([
+                'error' => 'Только администраторы могут добавлять пользователей к офису'
+            ], 403);
+        }
+
+        $office = CompanyOffice::findOrFail($office_id);
+
+        if ($office->company_id !== $request->user()->company_id) {
+            return response()->json([
+                'error' => 'Этот офис не принадлежит вашей компании'
+            ], 403);
+        }
+
+        $user = User::findOrFail($user_id);
+
+        $user->office_id = $office_id;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Пользователь успешно добавлен к офису',
+            'user' => $user
+        ]);
+    }
+    public function removeUserFromOffice(Request $request, $office_id, $user_id)
+    {
+        // Проверка прав доступа
+        if ($request->user()->role !== 'admin') {
+            return response()->json([
+                'error' => 'Только администраторы могут удалять пользователей из офиса'
+            ], 403);
+        }
+
+        // Найти офис по ID
+        $office = CompanyOffice::findOrFail($office_id);
+
+        // Проверка, что офис принадлежит той же компании, что и пользователь
+        if ($office->company_id !== $request->user()->company_id) {
+            return response()->json([
+                'error' => 'Этот офис не принадлежит вашей компании'
+            ], 403);
+        }
+
+        // Найти пользователя по ID
+        $user = User::findOrFail($user_id);
+
+        // Проверка, что пользователь находится в указанном офисе
+//        if ($user->office_id !== $office_id) {
+//            return response()->json([
+//                'error' => 'Пользователь не находится в указанном офисе'
+//            ], 400);
+//        }
+
+        // Удалить связь пользователя с офисом
+        $user->office_id = null;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Пользователь успешно удалён из офиса',
+        ]);
+    }
 }
